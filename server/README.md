@@ -72,8 +72,9 @@ JWT_SECRET=your_jwt_secret
 ```bash
 npm run dev
 
-Production
-</> Bash
+### Production
+
+```bash
 npm start
 
 Server runs on:
