@@ -1,155 +1,79 @@
-👤 Author
+# 🚀 Crowdfunding Finance Platform (Backend)
 
-FundSpark Team
+A modern crowdfunding platform that connects project creators with backers.  
+Users can create projects, donate securely, and track funding progress.
 
 ---
 
-# 📁 server/README.md (Backend)
+## 🌐 Live Demo
 
-```md
-# 🚀 FundSpark — Backend
+🔗 Live:  
+https://crowdfunding-frontend-two.vercel.app/
 
-Backend API for the FundSpark crowdfunding platform.  
-Built with Node.js, Express, and Supabase.
+🔗 Backend API:  
+https://crowdfund-backend-3xdd.onrender.com
+
+🔗 Backend Repository:  
+https://github.com/THUTAHEMALATHA/backend-crowdfund
 
 ---
 
 ## 🧱 Tech Stack
 
+### Backend
+
 - Node.js
 - Express.js
-- Supabase (database)
-- JWT Authentication
-- CORS
-- dotenv
+- Supabase Database
+- Render Deployment
 
 ---
 
-## ✨ Features
-
-- User registration & login
-- JWT protected routes
-- Project CRUD
-- Donations system
-- Rewards support
-- Comments support
-- Milestones support
-
----
-
-## 📂 Folder Structure
-
-server/
-├── config/
-│ └── supabaseClient.js
-├── middleware/
-│ └── authMiddleware.js
-├── controllers/
-├── routes/
-├── index.js
+## 📁 Folder Structure
+client/
+├── public/
+├── src/
+│ ├── components/
+│ ├── pages/
+│ ├── context/
+│ ├── lib/
+│ ├── layouts/
+│ ├── api/
+│ ├── App.jsx
+│ └── main.jsx
 └── README.md
+
+---
+## 🔌 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| POST | /api/auth/login | User login |
+| POST | /api/projects | Create project |
+| GET | /api/projects | Get all projects |
+| POST | /api/donations | Create donation |
+| GET | /api/milestone/project/:id | Get milestones |
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create `.env` inside **server/**
-
-PORT=5000
 SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-JWT_SECRET=your_jwt_secret
-
-
-⚠️ Never commit `.env` to GitHub.
+SUPABASE_ROLE_KEY=your_supabase_anon_key
+PORT=5000
 
 ---
 
-## ▶️ Run Server
-
-### Development
+## 🛠️ Installation
 
 ```bash
+npm install
 npm run dev
-
-### Production
-
-```bash
-npm start
-
-Server runs on:
-
-http://localhost:5000
-
-🔐 Authentication
-
-Protected routes require JWT.
-
-Header format:
-Authorization: Bearer <token>
-
-Middleware used:
-middleware/authMiddleware.js
-
-🔌 API Endpoints
-🔑 Auth
-
--POST /api/auth/register
-
--POST /api/auth/login
-
-📁 Projects
-
--GET /api/projects
-
--GET /api/projects/:id
-
--POST /api/projects (protected)
-
--PUT /api/projects/:id (protected)
-
--DELETE /api/projects/:id (protected)
-
-💰 Donations
-
--POST /api/donations/create (protected)
-
--GET /api/donations/project/:id
-
-🎁 Rewards
-
--GET /api/rewards/project/:id
-
--POST /api/rewards (protected)
-
-💬 Comments
-
--GET /api/comments/project/:id
-
--POST /api/comments (protected)
-
-🎯 Milestones
-
--GET /api/milestone/project/:id
-
--POST /api/milestone (protected)
 
 🚀 Deployment
 
-Recommended:
+Deployed on Render.
 
-Backend → Render
+👤 Author
 
-Render settings:
-
-Build command: npm install
-
-Start command: npm start
-
-🔒 Security Notes
-
-Use service role key only on backend
-
-Never expose service key to frontend
-
-Always verify JWT in protected routes
+T.Hemalatha
