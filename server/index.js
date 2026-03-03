@@ -53,27 +53,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 app.post("/create-payment-intent", async (req, res) => {
   const { amount, projectId } = req.body;
 
-const session = await stripe.checkout.sessions.create({
-  payment_method_types: ["card"],
-  mode: "payment",
-  line_items: [
-    {
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: "FundSpark Donation",
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: "FundSpark Donation",
+            },
+            unit_amount: Number(amount) * 100,
+          },
+          quantity: 1,
         },
-        unit_amount: Number(amount) * 100,
+      ],
+      success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
+      cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
+      metadata: {
+        projectId: projectId,
       },
-      quantity: 1,
-    },
-  ],
-  success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
-  cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
-  metadata: {
-    projectId: projectId, // ✅ FIXED
-  },
-});
+    });
 
     res.json({ sessionId: session.id });
   } catch (err) {
@@ -81,6 +82,7 @@ const session = await stripe.checkout.sessions.create({
     res.status(500).json({ message: "Stripe session failed" });
   }
 });
+
 //
 
 
