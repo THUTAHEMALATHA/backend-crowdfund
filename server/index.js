@@ -55,26 +55,26 @@ app.post("/create-payment-intent", async (req, res) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "inr",
-            product_data: {
-              name: "FundSpark Donation",
-            },
-            unit_amount: Number(amount) * 100,
-          },
-          quantity: 1,
+  payment_method_types: ["card"],
+  mode: "payment",
+  line_items: [
+    {
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: "FundSpark Donation",
         },
-      ],
-      success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
-      cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
-      metadata: {
-        projectId: projectId,
+        unit_amount: Number(amount) * 100,
       },
-    });
+      quantity: 1,
+    },
+  ],
+  success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
+  cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
+  metadata: {
+    projectId: projectId,
+  },
+});
 
     res.json({ sessionId: session.id });
   } catch (err) {
