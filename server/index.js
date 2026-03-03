@@ -53,28 +53,27 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 app.post("/create-payment-intent", async (req, res) => {
   const { amount, projectId } = req.body;
 
-  try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "inr",
-            product_data: {
-              name: "FundSpark Donation",
-            },
-            unit_amount: amount * 100,
-          },
-          quantity: 1,
+const session = await stripe.checkout.sessions.create({
+  payment_method_types: ["card"],
+  mode: "payment",
+  line_items: [
+    {
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: "FundSpark Donation",
         },
-      ],
-       success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
-       cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
-      metadata: {
-        projectId,
+        unit_amount: Number(amount) * 100,
       },
-    });
+      quantity: 1,
+    },
+  ],
+  success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
+  cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
+  metadata: {
+    projectId: projectId, // ✅ FIXED
+  },
+});
 
     res.json({ sessionId: session.id });
   } catch (err) {
@@ -83,7 +82,7 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 //
-//  
+
 
 const PORT = process.env.PORT || 5000;
 
