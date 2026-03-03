@@ -1,3 +1,4 @@
+import Stripe from "stripe";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -32,7 +33,7 @@ app.get("/test-db", async (req, res) => {
     .from("projects1")
     .select("*")
     .limit(1);
-
+    
   if (error) {
     return res.status(500).json({
       success: false,
@@ -45,6 +46,43 @@ app.get("/test-db", async (req, res) => {
     data,
   });
 });
+
+// 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { amount, projectId } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: "FundSpark Donation",
+            },
+            unit_amount: amount,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancel",
+      metadata: {
+        projectId,
+      },
+    });
+
+    res.json({ sessionId: session.id });
+  } catch (err) {
+    console.error("Stripe error:", err.message);
+    res.status(500).json({ message: "Stripe session failed" });
+  }
+});
+// 
 
 const PORT = process.env.PORT || 5000;
 
