@@ -68,7 +68,7 @@ app.post("/create-payment-intent", async (req, res) => {
         product_data: {
           name: "FundSpark Donation",
         },
-        unit_amount: Math.round(amount * 100),
+        unit_amount: Math.round(Number(amount) * 100),
       },
       quantity: 1,
     },
