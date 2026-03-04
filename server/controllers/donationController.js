@@ -66,14 +66,12 @@ export const createDonation = async (req, res) => {
     }
 
     // ✅ 5. update project amount
-    const newAmount =
-      Number(project.amount_raised) + Number(amount);
-
-    const { error: updateError } = await supabase
-      .from("projects1")
-      .update({ amount_raised: newAmount })
-      .eq("id", project_id);
-
+     const { error: updateError } =
+await supabase.rpc("increment_project_funding", {
+  project_id_input: project_id,
+  donation_amount: amount
+});
+    
     if (updateError) {
       return res.status(500).json({
         success: false,
@@ -83,8 +81,8 @@ export const createDonation = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      donation,
-      newAmountRaised: newAmount,
+      donation
+      
     });
   } catch (err) {
     res.status(500).json({
