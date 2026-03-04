@@ -53,26 +53,24 @@ const razorpay = new Razorpay({
 });
   
 app.post("/create-order", async (req, res) => {
-
-  const { amount, projectId } = req.body;
-
   try {
 
-    const order = await razorpay.orders.create({
-      amount: amount * 100,
+    const { amount, projectId } = req.body;
+     console.log("Donation amount")
+    const options = {
+      amount: Number(amount) * 100, 
       currency: "INR",
-      receipt: `order_${projectId}`
-    });
+      receipt: "order_" + Date.now()
+    };
+
+    const order = await razorpay.orders.create(options);
 
     res.json(order);
 
-  } catch (err) {
-
-    console.error(err);
-    res.status(500).json({ message: "Order creation failed" });
-
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Order creation failed" });
   }
-
 });
 
 //
