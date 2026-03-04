@@ -69,8 +69,8 @@ app.post("/create-payment-intent", async (req, res) => {
       quantity: 1,
     },
   ],
-  success_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/success",
-  cancel_url: "https://crowdfunding-frontend-coah2xewy.vercel.app/cancel",
+     success_url: "https://crowdfunding-frontend-two.vercel.app/success",
+     cancel_url: "https://crowdfunding-frontend-two.vercel.app/cancel",
   metadata: {
     projectId: projectId,
   },
