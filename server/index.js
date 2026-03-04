@@ -51,8 +51,6 @@ app.get("/test-db", async (req, res) => {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
   {
     apiVersion: "2023-10-16",
-    timeout: 20000,
-    maxNetworkRetries: 0
   });
 
 app.post("/create-payment-intent", async (req, res) => {
@@ -61,7 +59,8 @@ app.post("/create-payment-intent", async (req, res) => {
   console.log("AMOUNT:",amount);
 
   try {
-      const session = await stripe.checkout.sessions.create({
+ const session = await stripe.checkout.sessions.create(
+{
   payment_method_types: ["card"],
   mode: "payment",
   line_items: [
@@ -79,9 +78,12 @@ app.post("/create-payment-intent", async (req, res) => {
   success_url: "https://crowdfunding-frontend-two.vercel.app/success",
   cancel_url: "https://crowdfunding-frontend-two.vercel.app/cancel",
   metadata: {
-    projectId: projectId,
-  },
-  
+    projectId: projectId
+  }
+},
+{
+  timeout: 20000,
+  maxNetworkRetries: 0
 });
     res.json({ sessionId: session.id });
   } catch (err) {
