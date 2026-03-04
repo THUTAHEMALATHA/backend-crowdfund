@@ -50,9 +50,9 @@ app.get("/test-db", async (req, res) => {
 // 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
   {
-    apiVersion: "2023-10-16"
-  }
-);
+    apiVersion: "2023-10-16",
+    timeout: 20000,
+  });
 
 app.post("/create-payment-intent", async (req, res) => {
   console.log("BODY:",req.body);
@@ -80,9 +80,8 @@ app.post("/create-payment-intent", async (req, res) => {
   metadata: {
     projectId: projectId,
   },
+  {maxNetworkRetries: 0
 });
-
-
     res.json({ sessionId: session.id });
   } catch (err) {
     console.error("Stripe error:", err.message);
