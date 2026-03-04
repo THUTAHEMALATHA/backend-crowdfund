@@ -1,4 +1,4 @@
-import Stripe from "stripe";
+import Razorpay from "razorpay";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -46,50 +46,35 @@ app.get("/test-db", async (req, res) => {
     data,
   });
 });
-
 // 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
-  {
-    apiVersion: "2023-10-16",
-  });
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET
+});
+  
+const { amount, projectId } = req.body;
 
-app.post("/create-payment-intent", async (req, res) => {
-  console.log("BODY:",req.body);
+app.post("/create-order", async (req, res) => {
+
   const { amount, projectId } = req.body;
-  console.log("AMOUNT:",amount);
 
   try {
- const session = await stripe.checkout.sessions.create(
-{
-  payment_method_types: ["card"],
-  mode: "payment",
-  line_items: [
-    {
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: "FundSpark Donation",
-        },
-        unit_amount: Math.round(Number(amount) * 100),
-      },
-      quantity: 1,
-    },
-  ],
-  success_url: "https://crowdfunding-frontend-two.vercel.app/success",
-  cancel_url: "https://crowdfunding-frontend-two.vercel.app/cancel",
-  metadata: {
-    projectId: projectId
-  }
-},
-{
-  timeout: 20000,
-  maxNetworkRetries: 0
-});
-    res.json({ sessionId: session.id });
+
+    const order = await razorpay.orders.create({
+      amount: amount * 100,
+      currency: "INR",
+      receipt: `order_${projectId}`
+    });
+
+    res.json(order);
+
   } catch (err) {
-    console.error("Stripe error:", err.message);
-    res.status(500).json({ message: "Stripe session failed" });
+
+    console.error(err);
+    res.status(500).json({ message: "Order creation failed" });
+
   }
+
 });
 
 //
