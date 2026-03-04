@@ -48,7 +48,11 @@ app.get("/test-db", async (req, res) => {
 });
 
 // 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
+  {
+    apiVersion: "2023-10-16"
+  }
+);
 
 app.post("/create-payment-intent", async (req, res) => {
   const { amount, projectId } = req.body;
@@ -64,7 +68,7 @@ app.post("/create-payment-intent", async (req, res) => {
         product_data: {
           name: "FundSpark Donation",
         },
-        unit_amount: Math.round(Number(amount) * 100),
+        unit_amount: Math.round(amount * 100),
       },
       quantity: 1,
     },
