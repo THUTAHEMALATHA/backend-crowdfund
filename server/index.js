@@ -55,7 +55,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
 );
 
 app.post("/create-payment-intent", async (req, res) => {
+  console.log("BODY:",req.body);
   const { amount, projectId } = req.body;
+  console.log("AMOUNT:",amount);
 
   try {
       const session = await stripe.checkout.sessions.create({
