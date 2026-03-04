@@ -52,8 +52,6 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET
 });
   
-const { amount, projectId } = req.body;
-
 app.post("/create-order", async (req, res) => {
 
   const { amount, projectId } = req.body;
