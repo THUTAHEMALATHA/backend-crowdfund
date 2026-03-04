@@ -54,7 +54,7 @@ app.post("/create-payment-intent", async (req, res) => {
   const { amount, projectId } = req.body;
 
   try {
-    const session = await stripe.checkout.sessions.create({
+      const session = await stripe.checkout.sessions.create({
   payment_method_types: ["card"],
   mode: "payment",
   line_items: [
@@ -64,17 +64,18 @@ app.post("/create-payment-intent", async (req, res) => {
         product_data: {
           name: "FundSpark Donation",
         },
-        unit_amount: Number(amount) * 100,
+        unit_amount: Math.round(Number(amount) * 100),
       },
       quantity: 1,
     },
   ],
-     success_url: "https://crowdfunding-frontend-two.vercel.app/success",
-     cancel_url: "https://crowdfunding-frontend-two.vercel.app/cancel",
+  success_url: "https://crowdfunding-frontend-two.vercel.app/success",
+  cancel_url: "https://crowdfunding-frontend-two.vercel.app/cancel",
   metadata: {
     projectId: projectId,
   },
 });
+
 
     res.json({ sessionId: session.id });
   } catch (err) {
