@@ -52,6 +52,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY,
   {
     apiVersion: "2023-10-16",
     timeout: 20000,
+    maxNetworkRetries: 0
   });
 
 app.post("/create-payment-intent", async (req, res) => {
@@ -80,7 +81,7 @@ app.post("/create-payment-intent", async (req, res) => {
   metadata: {
     projectId: projectId,
   },
-  {maxNetworkRetries: 0
+  
 });
     res.json({ sessionId: session.id });
   } catch (err) {
